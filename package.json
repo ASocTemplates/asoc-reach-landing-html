@@ -1,0 +1,28 @@
+{
+  "name": "asoc-reach-landing-html",
+  "private": true,
+  "version": "1.1.0",
+  "type": "module",
+  "description": "ASoc Reach — framework-free HTML + Tailwind CSS edition. AI-marketing agency landing page, built from the asoc-html-kit template.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "format": "prettier --write \"src/**/*.{js,css}\" \"pages/**/*.html\"",
+    "format:check": "prettier --check \"src/**/*.{js,css}\" \"pages/**/*.html\"",
+    "progress": "node build/progress.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "@fontsource-variable/manrope": "^5.1.0",
+    "@fontsource-variable/sora": "^5.1.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.1",
+    "lucide-static": "^0.454.0",
+    "postcss": "^8.4.47",
+    "prettier": "^3.3.3",
+    "tailwindcss": "^4.3.1",
+    "vite": "^7.1.5"
+  }
+}

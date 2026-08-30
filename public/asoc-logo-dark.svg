@@ -1,0 +1,7 @@
+<svg width="120" height="34" viewBox="0 0 120 34" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ASoc Reach">
+  <circle cx="9" cy="25" r="7.5" fill="#ffffff" />
+  <circle cx="23" cy="14" r="7.5" fill="#ffffff" />
+  <circle cx="39" cy="9" r="6" fill="#f14f44" />
+  <path d="M9 25 23 14l14-4" stroke="#ffffff" stroke-width="2" fill="none" opacity="0.5" />
+  <text x="54" y="24" font-family="'Sora', 'Manrope', system-ui, sans-serif" font-size="22" font-weight="500" fill="#ffffff" letter-spacing="-0.5">ASoc</text>
+</svg>

@@ -1,0 +1,6 @@
+<svg width="34" height="30" viewBox="0 0 34 30" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ASoc Reach">
+  <circle cx="7" cy="22" r="6.5" fill="#111111" />
+  <circle cx="19" cy="12" r="6.5" fill="#111111" />
+  <circle cx="30" cy="8" r="5" fill="#f14f44" />
+  <path d="M7 22 19 12l11-4" stroke="#111111" stroke-width="1.8" fill="none" opacity="0.5" />
+</svg>

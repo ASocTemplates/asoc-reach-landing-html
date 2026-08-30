@@ -1,0 +1,433 @@
+/* Fonts are imported from `src/js/main.js`, not here, so Vite resolves each
+   @fontsource package's own `./files/*.woff2` URLs and fingerprints them. */
+@import "tailwindcss";
+
+/* Dark mode is class-based: `.dark` on <html>, set before first paint (see head). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme inline {
+  /* The reference edition loads Manrope for body copy and Sora
+     for headings via next/font/google — swapped in for the kit's stock Inter
+     / Plus Jakarta Sans pair below. */
+  --font-sans: Manrope Variable, Manrope, system-ui, sans-serif;
+  --font-display: Sora Variable, Sora, Manrope, system-ui, sans-serif;
+  --font-mono: JetBrains Mono Variable, JetBrains Mono, monospace;
+
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --color-success: hsl(var(--success));
+  --color-warning: hsl(var(--warning));
+  --color-info: hsl(var(--info));
+
+  --color-sidebar: hsl(var(--sidebar));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+
+  /* Edition-specific: the reference's "surface-dark" is a fixed-dark chrome
+     band (hero accent panel's opposite number, mission card, projects
+     section, 404) that stays dark in BOTH themes — not the same axis as
+     --background/.dark. Not part of the kit's stock vocabulary; added here
+     rather than forced into --card or --background, which do flip with the
+     theme and would break the "always dark" band. --on-dark is that band's
+     constant near-white foreground (the reference never redefines it under
+     .dark either — see src/css/globals.css's :root/.dark blocks below). */
+  --color-surface-dark: hsl(var(--surface-dark));
+  --color-surface-dark-2: hsl(var(--surface-dark-2));
+  --color-on-dark: hsl(var(--on-dark));
+
+  /* Reference uses large pill-style radii (28px cards, 14px chip icons) well
+     past what scaling --radius would produce; carried over as literal named
+     radii rather than reshaping the kit's --radius scale for one edition. */
+  --radius-card: 28px;
+  --radius-chip: 14px;
+
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --shadow-sm: 0 1px 2px 0 rgb(15 23 42 / 0.04);
+  --shadow: 0 1px 3px 0 rgb(15 23 42 / 0.06), 0 1px 2px -1px rgb(15 23 42 / 0.06);
+  --shadow-md: 0 4px 12px -2px rgb(15 23 42 / 0.08);
+  --shadow-lg: 0 12px 32px -8px rgb(15 23 42 / 0.12);
+
+  --animate-fade-up: fade-up 0.5s ease-out both;
+  --animate-fade-in: fade-in 0.4s ease-out both;
+  --animate-scale-in: scale-in 0.4s ease-out both;
+  --animate-pulse-dot: pulse-dot 1.8s ease-in-out infinite;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  @keyframes pulse-dot {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.45;
+      transform: scale(0.7);
+    }
+  }
+}
+
+/* --------------------------------------------------------------- design tokens
+   Hand-mapped from the reference edition's app/globals.css (Tailwind v3,
+   plain :root/.dark custom properties — --bg, --ink, --accent, --muted,
+   --line, --card, --surface-dark…, no `@theme` block, no shared vocabulary
+   with the kit's --background/--foreground/--primary names). Every source hex
+   converted to HSL (not eyeballed) and placed in the kit slot matching its
+   ROLE, not its name — see this edition's CLAUDE.md for the full table.
+   Values are HSL triplets so Tailwind utilities can add their own alpha. */
+@layer base {
+  :root {
+    --background: 0 0% 100%; /* source --bg #ffffff */
+    --foreground: 0 0% 7%; /* source --ink #111111 */
+
+    --card: 0 0% 100%; /* source --card #ffffff */
+    --card-foreground: 0 0% 7%; /* source --card-ink #111111 (== --ink) */
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 7%;
+
+    /* Source has one brand color (--accent #f14f44), used for every primary
+       CTA/highlight — mapped to the kit's --primary, its dominant-action role. */
+    --primary: 4 86% 61%; /* source --accent #f14f44 */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 210 15% 95%; /* source --bg-alt #f0f2f4 */
+    --secondary-foreground: 0 0% 7%;
+
+    --muted: 210 15% 95%; /* source --bg-alt #f0f2f4 (muted BACKGROUND) */
+    --muted-foreground: 0 0% 42%; /* source --muted #6b6b6b (muted TEXT) */
+
+    /* Source has no secondary/decorative accent distinct from --primary — its
+       one brand color fills both kit roles. */
+    --accent: 4 86% 61%; /* source --accent #f14f44 */
+    --accent-foreground: 0 0% 100%;
+
+    /* Not defined by the source (no destructive/success/warning/info UI on a
+       marketing site) — kept at kit stock. */
+    --destructive: 347 72% 45%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 142 72% 30%;
+    --warning: 38 92% 50%;
+    --info: 199 89% 38%;
+
+    --border: 210 10% 92%; /* source --line #e9ebed */
+    --input: 210 10% 92%;
+    --ring: 4 86% 61%; /* source's own focus-visible color is var(--accent) */
+
+    /* Not used — this edition has no sidebar (marketing layout only). */
+    --sidebar: 0 0% 100%;
+    --sidebar-foreground: 215 25% 27%;
+    --sidebar-border: 214 32% 91%;
+
+    --radius: 0.75rem;
+
+    /* Edition-specific — see the @theme block above. Fixed-dark chrome band,
+       same value in both themes' :root/.dark (source keeps it dark-toned in
+       both — this isn't the page's dark-mode background). */
+    --surface-dark: 0 0% 7%; /* source --surface-dark #111111 */
+    --surface-dark-2: 0 0% 12%; /* source --surface-dark-2 #1f1f1f */
+    --on-dark: 0 0% 96%; /* source --on-dark #f5f5f5 (never redefined under .dark) */
+  }
+
+  .dark {
+    --background: 214 23% 6%; /* source --bg #0c0f13 */
+    --foreground: 210 11% 96%; /* source --ink #f5f6f7 */
+
+    --card: 213 23% 9%; /* source --card #12171d */
+    --card-foreground: 210 11% 96%;
+    --popover: 213 23% 9%;
+    --popover-foreground: 210 11% 96%;
+
+    --primary: 4 86% 61%; /* source's accent is constant across themes */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 213 24% 9%; /* source --bg-alt #11161c */
+    --secondary-foreground: 210 11% 96%;
+
+    --muted: 213 24% 9%; /* source --bg-alt #11161c */
+    --muted-foreground: 212 8% 63%; /* source --muted #9aa1a9 */
+
+    --accent: 4 86% 61%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 347 91% 64%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 142 64% 52%;
+    --warning: 38 95% 58%;
+    --info: 199 89% 60%;
+
+    --border: 210 17% 16%; /* source --line #232a31 */
+    --input: 210 17% 16%;
+    --ring: 4 86% 61%;
+
+    --sidebar: 222 47% 9%;
+    --sidebar-foreground: 215 20% 75%;
+    --sidebar-border: 217 33% 17%;
+
+    --surface-dark: 213 23% 9%; /* source --surface-dark #12171d */
+    --surface-dark-2: 212 22% 14%; /* source --surface-dark-2 #1b222a */
+    --on-dark: 0 0% 96%; /* unchanged — source never redefines it under .dark */
+  }
+}
+
+/* Tailwind v4 defaults `border-color` to currentColor; keep the v3 look. */
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: hsl(var(--border));
+  }
+
+  /* Clears the sticky marketing header (h-16 + border) when landing on an
+     in-page anchor (`/#services` etc.) — this is a mostly-anchor single-page
+     nav, so every header link depends on this. */
+  html {
+    scroll-padding-top: 72px;
+  }
+
+  body {
+    font-feature-settings: "cv11", "ss01";
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display tracking-tight;
+  }
+
+  /* Visible keyboard focus everywhere — ported from the reference's own
+     globals.css, which calls this out as "accessibility, not optional".
+     The kit has no stock focus-visible rule (relies on the browser default),
+     but the reference's branded ring is cheap to carry over and matches its
+     own --ring token (the accent color) rather than the browser's blue. */
+  :where(a, button, input, textarea, select, [tabindex]):focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+}
+
+/* ---------------------------------------------------------------- components
+   Ported 1:1 from the reference's `app/globals.css` `@layer components`
+   block (`.container-x`, `.eyebrow`, `.grad-text`, `.legal-prose`) so every
+   page fragment can reuse the reference's own class names instead of
+   re-deriving Tailwind utility soup per section. */
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-[1320px] px-5 sm:px-8 lg:px-10;
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 font-sans text-[13px] font-bold uppercase tracking-[0.06em] text-foreground;
+  }
+  .eyebrow::before,
+  .eyebrow::after {
+    content: "/";
+    color: hsl(var(--primary));
+  }
+
+  /* Brand gradient on accent words + big counter numbers. Anchored on the
+     accent red and warmed toward magenta/violet — same literal stops as the
+     reference; not theme-driven (the reference never redefines --grad under
+     .dark either). */
+  .grad-text {
+    background: linear-gradient(95deg, #f14f44 0%, #f0654b 24%, #e0479a 64%, #9b5fd0 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  /* Readable long-form copy for the legal pages (privacy/terms/environmental-policy). */
+  .legal-prose h2 {
+    @apply text-[22px] sm:text-[26px];
+  }
+  .legal-prose h2:not(:first-child) {
+    @apply mt-12;
+  }
+  .legal-prose p,
+  .legal-prose li {
+    @apply leading-[1.85] text-muted-foreground;
+  }
+  .legal-prose ul {
+    @apply mt-3 list-disc space-y-2 pl-5;
+  }
+  .legal-prose a {
+    @apply text-primary underline-offset-4 hover:underline;
+  }
+}
+
+/* ------------------------------------------------------------------ utilities */
+
+/* Thin, themeable scrollbars */
+@utility scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--border)) transparent;
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--border));
+    border-radius: 9999px;
+  }
+}
+
+@utility hover-lift {
+  @apply transition-[transform,box-shadow] duration-200 ease-out;
+  &:hover {
+    @apply -translate-y-0.5 shadow-md;
+  }
+}
+
+/* ------------------------------------------------------- collapsed sidebar rail
+   `sidebar-collapsed` is set on <html> (persisted in localStorage and applied
+   before first paint) so the rail never flashes wide on load. */
+/* These live in the `utilities` layer, not `components`: they override Tailwind
+   utilities on the same elements (`w-64`, `hidden`, `-translate-x-full`), and in
+   Tailwind v4 the utilities layer always wins over components regardless of
+   specificity. Plain CSS rather than `@apply` keeps that intent obvious. */
+@layer utilities {
+  /* Mobile drawer state, toggled by `js/sidebar.js`. Tailwind v4 moves elements
+     with the `translate` property, so reset that one — not `transform`. */
+  .sidebar-open #sidebar {
+    translate: 0;
+  }
+
+  /* Master/detail panes (Inbox, Messages). Below `lg` the two panes stack and only
+     one is shown at a time; `js/panes.js` toggles `pane-detail-open` on the root. */
+  @media (width < 64rem) {
+    [data-pane] [data-pane-detail] {
+      display: none;
+    }
+    [data-pane].pane-detail-open [data-pane-list] {
+      display: none;
+    }
+    [data-pane].pane-detail-open [data-pane-detail]:not(.hidden) {
+      display: flex;
+    }
+  }
+
+  @media (width >= 64rem) {
+    .sidebar-collapsed #sidebar {
+      width: 76px;
+    }
+    .sidebar-collapsed #app-content {
+      padding-left: 76px;
+    }
+    .sidebar-collapsed .sidebar-label {
+      display: none;
+    }
+    .sidebar-collapsed .sidebar-mark {
+      display: block;
+    }
+    .sidebar-collapsed #sidebar nav {
+      padding-inline: calc(var(--spacing) * 2);
+    }
+    .sidebar-collapsed #sidebar nav a,
+    .sidebar-collapsed #sidebar [data-collapse-trigger] {
+      justify-content: center;
+      padding-inline: calc(var(--spacing) * 2);
+    }
+    .sidebar-collapsed #sidebar [data-collapse-panel] {
+      display: none;
+    }
+    .sidebar-collapsed #sidebar-collapse {
+      justify-content: center;
+      padding-inline: 0;
+    }
+    .sidebar-collapsed #sidebar-collapse svg {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+/* Respect the OS "reduce motion" preference everywhere (safety net) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Scroll-reveal — see src/js/reveal.js. The hiding rule is scoped to `.js`
+   (added by the pre-paint script in build/layout.js's head(), before first
+   paint) rather than to the element alone, so content is only ever hidden
+   once we know JS actually ran to unhide it. Without that guard, a page
+   whose module script fails to load or throws would ship every
+   [data-reveal] section permanently invisible — motion preference has
+   nothing to do with whether JS ran. The transition stays unscoped so a
+   revealed element still animates once `.js` is present. */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-reveal]:not([data-revealed]) {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  [data-reveal] {
+    transition:
+      opacity 0.5s ease-out,
+      transform 0.5s ease-out;
+  }
+}
