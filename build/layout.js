@@ -42,7 +42,11 @@ const icon = (name, cls = "size-5 shrink-0") =>
  * something as basic as a chevron. An unknown icon name fails the build rather than
  * silently rendering nothing.
  */
-const ICON_RE = /<i\s+data-lucide="([a-z0-9-]+)"([^>]*)><\/i>/g;
+// `</i\s*>` — NOT a literal `</i>`. Prettier splits the closing tag as
+// `</i\n          >` to keep zero-gap rendering when two icons sit back-to-back,
+// so a literal match skips every icon in such a run but the last, leaving empty
+// <i> elements that render as nothing (no lucide runtime ships here).
+const ICON_RE = /<i\s+data-lucide="([a-z0-9-]+)"([^>]*)><\/i\s*>/g;
 
 /**
  * Lucide renamed a batch of icons; the old spellings are still what most snippets
